@@ -1,0 +1,24 @@
+Package: tricordr
+Title: Integrates Process Provenance and Instrumentation to Pipelines of Tidyverse Primatives
+Version: 0.0.1
+Authors@R: 
+    person(given = "Brian",
+           family = "Vancil",
+           role = c("aut", "cre"),
+           email = "Brian@Vancil.name",
+           comment = c(ORCID = "https://orcid.org/0000-0003-1145-3681"))
+Description: Adds provenance to pipelines of data operation primitives. Logs helpful information about operations.
+License: GPL-3 + file LICENSE
+Suggests: 
+    testthat,
+    covr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.0.2
+Depends: 
+    R (>= 3.2)
+Imports: 
+    dplyr,
+    magrittr,
+    rlang

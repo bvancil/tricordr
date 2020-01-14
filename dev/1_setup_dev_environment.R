@@ -1,0 +1,11 @@
+utils::install.packages(c(
+  'devtools',
+  'glue',
+  'knitr',
+  'pkgdown',
+  'praise',
+  'remotes',
+  'rmarkdown',
+  'tidyverse',
+  'usethis'
+))
