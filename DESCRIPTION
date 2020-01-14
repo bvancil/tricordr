@@ -21,4 +21,5 @@ Depends:
 Imports: 
     dplyr,
     magrittr,
-    rlang
+    rlang,
+    tibble
