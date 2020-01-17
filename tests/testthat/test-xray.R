@@ -2,13 +2,15 @@ test_data <- generate_tibble()
 
 summary_data <- dplyr::count(test_data, x)
 
-testthat::test_that('Constant xray mutation produces a tibble with constant output', {
-  logger <- list()
-  output <- tricordr::xray(test_data, y = 0L * x, .log = logger)
-  summary <- logger[[1]]
-  expected_summary <- dplyr::mutate(summary_data, y = 0L) %>%
-    dplyr::select(x, y) %>%
-    dplyr::count(x, y) %>%
-    dplyr::arrange(x, y)
-  testthat::expect_equal(summary, expected_summary)
+testthat::test_that('xray can find input and output arguments', {
+  expected_summary <- glue::glue
+  testthat::expect_equal(
+    tricordr::xray(test_data, y = 0L * x, .log = logger),
+    list(
+      list(
+        input = c('x'),
+        output = c('y')
+      )
+    )
+  )
 })

@@ -1,33 +1,27 @@
-#' Mutate using X-rays
+# See http://adv-r.had.co.nz/Expressions.html#ast-funs
+
+symbols_from_ast <- function(expr) {
+
+}
+
+#' Inspect using X-rays
 #'
-#' @param .data tibble
-#' @param ... arguments to dplyr::mutate
-#' @param .log logging object
+#' @param .data tibble that is not used (but is here to match signature of mutate)
+#' @param ... arguments akin to dplyr::mutate
 #'
-#' @return tibble
+#' @return list of lists of input and output
 #' @export
 #'
 #' @examples
 #' xray(dplyr::starwars, mass = base::round(mass, -1))
 xray <- function(.data, ..., .log = NULL) {
-  # TODO: Add variables used in count as well
-  # TODO: Figure out what to do with .log
-  results <- dplyr::mutate(.data, ...)
-  # Does this not exist anymore? Newly added, but it doesn't resurn what I expected.
-  cols <- dplyr:::mutate_cols(.data, ...)
-  input_col_names <- base::setdiff(c(), base::names(cols$add)) # TODO: Figure out how to parse
-  truly_new_col_names <- base::setdiff(base::names(cols$add), base::names(.data))
-  modified_col_names <- base::intersect(base::names(cols$add), base::names(.data))
-  x_data <- .data[c(input_col_names, modified_col_names)]
-  base::names(x_data) <- stringr::str_c('X_', base::names(x_data))
-  y_data <- results[c(modified_col_names, truly_new_col_names)]
-  base::names(y_data) <- stringr::str_c('Y_', base::names(y_data))
-  xy_data <- base::cbind(x_data, y_data)
-  process <- xy_data %>%
-    dplyr::group_by_all() %>%
-    dplyr::tally() %>%
-    dplyr::ungroup()
-  print(process)
-
-  base::invisible(results)
+  dots <- rlang::enquos(...)
+  dots_names <- base::names(dots)
+  auto_named_dots <- base::names(rlang::enquos(..., .named = TRUE))
+  if (length(dots) == 0L) {
+    return(NULL)
+  }
+  output <- auto_named_dots
+  input <- NULL
+  browser()
 }
