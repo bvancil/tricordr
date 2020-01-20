@@ -40,28 +40,52 @@ devtools::install_github("bvancil/tricordr")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Warning: None of this actually works yet.
 
-```{r example}
-library(tricordr)
-## basic example code
+Eventually, we want full provenance, but this is sort of what we're going for.
+
+We'll start by creating some test data.
+
+```{r setup}
+library('dplyr')
+library('tibble')
+library('tricordr')
+
+# Here's some test data
+data_size <- 100L
+test_data <- tibble::tibble(
+  x = base::sample(c(0L, 1L), data_size, replace = TRUE),
+  y = base::sample(base::seq(0L, 2L), data_size, replace = TRUE)
+)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+In our data pipeline, we want to track what happens to our
+data. For instance, we might want to add another variable
+and transform the others.
 
-```{r cars}
-summary(cars)
+```{r mutate}
+final_data <- test_data %>% 
+  dplyr::mutate(z = x * y, y1 = y, y = x, x = 2L - y1)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+What happened? It will be tricky to figure out later.
+Instead, we can use `tricordr` to decorate the
+`dplyr::mutate` function so that we keep track.
 
-You can also embed plots, for example:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r decorate}
+test_provenance <- tricordr::Provenance$new()
+test <- test_provenance$wrap_operations()
+
+# Now we change `dplyr::mutate` to `test$mutate`
+final_data <- test_data %>% 
+  test$mutate(z = x * y, y1 = y, y = x, x = 2L - y1)
+
+print(test_provenance)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+We can create difference provenances for different pipelines
+and combine them later.
 
 ## Code of conduct
 
