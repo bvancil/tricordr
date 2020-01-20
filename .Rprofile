@@ -1,1 +1,3 @@
-source("renv/activate.R")
+if (base::file.exists("renv/activate.R")) {
+  base::source("renv/activate.R")
+}
